@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 5
+int stack[MAX],top = -1;
+void display()
+{
+    int i;
+    if (top == -1)
+        printf("\n-----------Stack is empty-----------");
+    else
+    {
+    printf("\nStack elements are:\n ");
+    for (i = top; i >= 0; i--)
+        printf("\t%d\t\n", stack[i]);
+    }
+}
+void push(int item)
+{
+    if (top == MAX - 1)
+        printf("\n-----------Stack overflow-----------");
+    else
+    stack[++top] = item;
+    display();
+    }
+int pop()
+{
+    if (top == -1)
+    {
+        printf("\n-----------Stack underflow-----------");
+        return 999;
+    }
+    else
+        return stack[top--];
+}
+void palindrome()
+{
+    int num,digit[MAX],d,j, i;
+    printf("\n\nenter a number:");
+    scanf("%d",&num);
+    top=-1;
+    j=0;
+    while(num>0)
+    {
+        d=num%10;
+        digit[j++]=d;
+        push(d);
+        num=num/10;
+    }
+    for(i=0;i<j;i++)
+    {
+        if(digit[i]!=pop())
+        break;
+    }
+    if (top == -1)
+        printf("\nIt is palindrome number");
+    else
+        printf("\nIt is not a palindrome number");
+    }
+int main()
+{
+    int choice, num;
+    while (1)
+    {
+        printf("\n\n\n\n-----------Menu----------- : ");
+        printf("\n=>1.Push an Element to Stack and Overflow demo ");
+        printf("\n=>2.Pop an Element from Stack and Underflow demo");
+        printf("\n=>3.Palindrome demo ");
+        printf("\n=>4.Display ");
+        printf("\n=>5.Exit");
+        printf("\nEnter your choice: ");
+        scanf("%d", & choice);
+        switch (choice)
+        {
+        case 1:
+            printf("\nEnter an element to be pushed: ");
+            scanf("%d", & num);
+            push(num);
+            break;
+        case 2:
+            num = pop();
+            if(num!=999)
+            {
+                printf("\nElement popped is: %d", num);
+                display();
+            }
+            break;
+        case 3:
+            palindrome();
+            break;
+        case 4:
+            exit(0);
+        default:
+            printf("\t invalid choice ");
+        }
+    }
+    return 0;
+}
