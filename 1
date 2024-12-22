@@ -1,0 +1,57 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include<string.h>
+#define DAYS_IN_WEEK 7
+#define MAX_STRING_LENGTH 100
+int n;
+struct Date{int dd,mm,yy;};
+typedef struct{
+    char *dayName;
+    struct Date date;
+    char *activity;
+}Day;
+Day* createCalendar(){
+    if(n>DAYS_IN_WEEK){
+        printf("weekdays cannot exceed 7 days....\n");
+        exit(1);
+    }
+    return(Day*)malloc(n*sizeof(Day));
+}
+void readDayData(Day*day){
+    day->dayName=(char*)malloc(MAX_STRING_LENGTH*sizeof(char));
+    day->activity=(char*)malloc(MAX_STRING_LENGTH*sizeof(char));
+    printf("enter the name of the day:");
+    scanf("%s",day->dayName);
+    printf("enter the date in dd mm yy format:");
+    scanf("%d%d%d",&day->date.dd,&day->date.mm,&day->date.yy);
+    printf("enter the description of the activity");
+    getchar();
+    fgets(day->activity,MAX_STRING_LENGTH,stdin);
+    day->activity[strcspn(day->activity,"\n")]='\0';
+}
+void displayCalendar(Day*calendar){
+    printf("\nweekly activities:\n");
+    printf("Day\t\tDate\t\tPlanned Activity\n");
+    for(int i=0;i<n;i++){
+        printf("%s\t%d-%d-%d\t\t%s\n",calendar[i].dayName,calendar[i].date.dd,calendar[i].date.mm,calendar[i].date.yy,calendar[i].activity);
+    }
+}
+void releaseMemory(Day*calendar){
+    for(int i=0;i<n;i++){
+        free(calendar[i].dayName);
+        free(calendar[i].activity);
+    }
+    free(calendar);
+}
+int main(){
+    printf("enter the number of days:");
+    scanf("%d",&n);
+    Day*calendar=createCalendar();
+    for(int i=0;i<n;i++){
+        readDayData(&calendar[i]);
+    }
+    displayCalendar(calendar);;
+    releaseMemory(calendar);
+    return 0;
+}
+
