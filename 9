@@ -1,0 +1,165 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<math.h>
+typedef struct NODE
+{
+    int Coef;
+    int ExpoX;
+    int ExpoY;
+    int ExpoZ;
+    struct NODE *next;
+    int Check;
+}node;
+node *Start=NULL, *New, *POLY1, *POLY2, POLYSUM;
+void Create_Poly(int C,int Ex, int Ey, int Ez)
+{
+    node *Temp;
+    New=(node*)malloc(sizeof (node));
+    New->Coef =C;
+    New->ExpoX =Ex;
+    New->ExpoY =Ey;
+    New->ExpoZ =Ez;
+    New->next =New;
+    New->Check = 0;
+    if(Start = NULL)
+        Start= New;
+    else
+    {
+        Temp=Start;
+        while(Temp->next!=Start)
+            Temp =Temp->next;
+        Temp->next = New;
+        New->next=Start;
+    }
+}
+void Read_Poly()
+{
+    int C, Ex, Ey, Ez, n, i;
+    printf("\n\n\tEnter Number of Terms: ");
+    scanf("%d", &n);
+    for (i=0; i<n; i++)
+    {
+        printf("\n\n\tEnter the Coefficient: ");
+        scanf("%d",&C);
+        printf("\n\n\tEnter the Exponent of Variable X: ");
+        scanf("%d",&Ex);
+        printf("\n\n\tEnter the Exponent of Variable Y: ");
+        scanf("%d",&Ey);
+        printf("\n\n\tEnter the Exponent of Variable Z: ");
+        scanf("%d",&Ez);
+        Create_Poly(C, Ex, Ey, Ez);
+}
+}
+void Display(node *Start)
+{
+    node *Temp=Start;
+    printf("\n\n Start-->");
+    do
+    {
+    printf("[%dx^%dy%dz^%d]->",Temp->Coef, Temp->ExpoX, Temp->ExpoY,Temp->ExpoZ);
+        Temp=Temp->next;
+    }
+    while (Temp!=Start);
+    printf(" Start");
+}
+void Eval_Poly()
+{
+    int Result=0,x,z,y;
+    node *Temp;
+    printf("\n\n\tEnter the Value of Variable X: ");
+    scanf("%d", &x); 
+    printf("\n\n\tEnter the Value of Variable Y: "); 
+    scanf("%d",&y); 
+    printf("\n\n\tEnter the Value of Variable 2: "); 
+    scanf("d",&z);
+    Temp=POLY1;
+    do
+    {
+    Result=Result+Temp->Coef *pow(x, Temp->ExpoX)*pow(y,Temp->ExpoY)*pow(z, Temp->ExpoZ);
+        Temp=Temp->next;
+    }
+    while (Temp!=POLY1);
+    printf("\n\n\tResult: %d", Result);
+}
+void Add_Poly()
+{   
+    node  *Temp1,*Temp2;
+    Start=NULL; 
+    Temp1 = POLY1;
+    do
+    {
+        Temp2 = POLY2;
+        do
+        {
+if((Temp1->ExpoX==Temp2->ExpoX)&&(Temp1->ExpoY==Temp2->ExpoY)&&(Temp1->ExpoZ==Temp2->ExpoZ) && (Temp2->Check==0))
+    {
+Create_Poly(Temp1->Coef+Temp2->Coef,Temp1->ExpoX,Temp1->ExpoY,Temp1->ExpoZ);
+                Temp1->Check=1;
+                Temp2->Check = 1;
+                break;
+    }
+        Temp2=Temp2->next;
+        }
+        while(Temp2 !=POLY2);
+        if(Temp2==POLY2 && Temp1->Check==0){
+Create_Poly(Temp1->Coef, Temp1->ExpoX,Temp1->ExpoY,Temp1->ExpoZ);
+            Temp1->Check = 1;
+        }
+        Temp1=Temp1->next;
+}
+        while (Temp1!=POLY1); 
+        Temp2=POLY2;
+        do
+        {
+            if (Temp2->Check==0)
+        {
+Create_Poly (Temp2->Coef, Temp2->ExpoX, Temp2->ExpoY,Temp2->ExpoZ);
+        Temp2->Check=1;
+    }
+    Temp2=Temp2->next;
+    }
+    while(Temp2!=POLY2);
+    POLYSUM=Start;
+
+}
+void main()
+{
+    int Option;
+    while (1)
+    {
+    printf("\n\nPolynomial Menu");
+    printf("\nl->Evaluate Polynomial\t2->Addition of 2 Polynomial");
+    printf("\t3->Exit");
+    printf("\n\n--------------------\n");
+    printf("\n\n\tEnter Your Option: ");
+    scanf("%d", &Option);
+    switch (Option)
+    {
+    case 1:
+        printf("\n\nEnter a Polynomial:-");
+        Start=NULL;
+        Read_Poly();
+        POLY1=Start;
+        Eval_Poly();
+        break;
+    case 2:
+        printf("\n\nEnter 1st Polynomial :-");
+        Start=NULL;
+        Read_Poly();
+        POLY1=Start;
+        printf("\n\nEnter 2nd Polynomial :-");
+        Start=NULL;
+        Read_Poly();
+        POLY2=Start;
+        Add_Poly();
+        printf("\n\n\n The 1st Polynomial is:");
+        Display(POLY1);
+        printf("\n\n\n The 2nd Polynomial is:");
+        Display(POLY2);
+        printf("\n\n\n The Resultant Polynomial is:");
+        break;
+    case 3:
+        exit(0);
+    }
+    }
+}
