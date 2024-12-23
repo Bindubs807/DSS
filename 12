@@ -1,0 +1,61 @@
+#include<stdio.h>
+#define MAX 5
+int hashtable[MAX];
+struct employee
+{
+    int key;
+    char name[25];
+    char design[20];
+    float salary;
+}E[MAX];
+void create_hashtable(int N)
+{
+    int i,j,count;
+    for(i=0;i<MAX;i++)
+        hashtable[i]=-1;
+    for(i=0;i<N;i++)
+    {
+        j=E[i].key%MAX;
+        count=0;
+        while(hashtable[j]!=-1)
+        {
+            j=(j+1)%MAX;
+            count++;
+        }
+    hashtable[j]=i;
+}
+printf("\n\nhashtable:\n\n");
+for(i=0;i<MAX;i++)
+{
+    if(hashtable[i]!=-1)
+    {
+        printf("\nhashtable[%d]->record of employee with key-%d\n",i,E[hashtable[i]].key);
+        printf("%d\t%s\t%s\t%f\n",E[hashtable[i]].key,E[hashtable[i]].name,E[hashtable[i]].design,E[hashtable[i]].salary);
+    }
+    else
+    printf("\nhashtable[%d]->empty\n",i);
+}
+}
+int read_file()
+{
+    FILE*fp;
+    int i;
+    fp=fopen("emp.txt","r");
+    i=0;
+    while(!feof(fp))
+    {
+        if(i==MAX){
+            printf("hash table is full.....cannot read anymore record!!!");
+            break;
+        }
+        fscanf(fp,"%d%s%s%f\n",&E[i].key,&E[i].name,&E[i].design,&E[i].salary);
+        i++;
+    }
+    return i;
+    }
+    void main()
+    {
+        int N;
+        N=read_file();
+        create_hashtable(N);
+    }
