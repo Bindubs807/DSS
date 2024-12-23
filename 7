@@ -1,0 +1,248 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct NODE
+{
+    char USN[11];
+    char Name[30];
+    char Branch[5];
+    int Sem;
+    char PhNo[11];
+    struct NODE *next ;
+} node ;
+
+node *Start,*New;
+
+void Create_Node()
+{
+    New = (node*)malloc(sizeof(node));
+    printf("\n\n\tEnter the Details of the Student:-\n");
+    printf("\n\n\tUSN:");
+    scanf("%s",New->USN);
+    printf("\n\n\tName:");
+    scanf("%s",New->Name);
+    printf("\n\n\tBranch:");
+    scanf("%s",New->Branch);
+    printf("\n\n\tSemester:");
+    scanf("%d",&New->Sem);
+    printf("\n\n\tPhoneNumber:");
+    scanf("%c",New->PhNo);
+    New->next=NULL;
+}
+void Insert_at_Front()
+{
+   Create_Node();
+   if(Start ==NULL)
+      Start  =  New ;
+   else
+   {
+    New->next  = Start ;
+    Start = New;
+   }
+}
+void Insert_at_End ()
+{
+    Create_Node();
+    node *Temp;
+    if(Start ==NULL)
+        Start = New ;
+    else
+    {
+        Temp=Start;
+        while (Temp->next!=NULL)
+            Temp=Temp->next ;
+        Temp->next=New;
+     }
+}
+void Delete_at_Front ()
+{
+    node *Temp;
+    if(Start==NULL)
+        printf("\n\tList is Empty, cannot Delete . . .");
+    else
+    {
+        Temp=Start;
+        Start=Start->next;
+        printf("\n\n\tNode   with USN  : %s  is Deleted", Temp->USN) ;
+        free (Temp) ;
+    }
+}
+void Delete_at_End ()
+{
+    node *Temp, *Prev ;
+    if (Start==NULL)
+        printf("\n\n\tList is Empty, cannot Delete .  .  .") ;
+    else
+    {
+        if  (Start ->next  ==NULL)
+        {
+            printf("\n\n\tNode    with  USN     :  %s    is Deleted", Start->USN) ;
+            free(Start) ;
+            Start=NULL;
+        }
+        else
+        {
+            Temp = Start;
+            Prev= Temp;
+            while(Temp->next!=NULL)
+            {
+                Prev=Temp;
+                Temp=Temp->next;
+            }
+            Prev->next=NULL;
+            printf("\n\n\tNode   with USN  : %s  is Deleted", Temp->USN) ;
+            free(Temp) ;
+          }
+     }
+}
+void Display()
+{
+    int  Count = 0;
+    node *Temp;  
+    if(Start==NULL)
+        printf("\n\n\n/tList is Empty");
+    else
+    {
+        printf("\n\n\n/tSTART-->");
+        Temp = Start;
+        while(Temp!=NULL)
+        {
+            printf("\n\n\n/t [%s/%s/%s/%d/%s]-->",Temp->USN,Temp->Name,Temp->Branch,Temp->Sem, Temp->PhNo);
+            Count++;
+            Temp=Temp->next;
+        }   
+        printf ("NULL");
+    }
+    printf("\n\n\tList  Contains %d Nodes", Count);
+}
+void At_End ()
+{
+    int option;
+    while(1)
+{
+printf("n\n\n/n- - - - -Operations at End Menu - - - - - -");
+printf("\n\n1 ->Insertion\t2->Deletion \t3->Return to Main Menu");
+printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -") ;
+printf("\n\n\tEnter Your Option :") ;
+scanf ("%d",&option) ;
+switch (option)
+{
+case 1:
+Insert_at_End () ;
+break ;
+case 2:
+Delete_at_End () ;
+break ;
+case 3 :
+return ;
+       }
+   }
+}
+void At_Front ()
+{
+    int option;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -Operations at Front Menu - - - - - -");
+        printf("\n\n1 ->Insertion\t2->Deletion\t3->Return to Main Menu") ;
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        printf("\n\n\tEnter Your Option:");
+        scanf ("%d", & option);
+        switch(option)
+        {
+        case  1 :
+            Insert_at_Front();
+            break ;
+        case 2 :
+            Delete_at_Front();
+            break ;
+        case 3 :
+            return ;
+        }
+    }
+}
+void Stack ()
+{
+    int option;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -Stack Operations at Menu - - - - - -");
+        printf("\n\n1->Push\t2->Pop\t3->Return to Demonstration Menu");
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        printf("\n\n\tEnter Your Option : ");
+        scanf("%d",&option) ;
+        switch(option)
+        {
+        case  1 :
+            Insert_at_End () ;
+            Display ();
+            break ;
+        case 2 :
+            if (Start==NULL)
+                 printf ("\n\n\tStack is Empty, Cannot Pop") ;
+            else
+            {
+                Delete_at_End () ;
+                Display ();
+            }
+            break ;
+        case 3 :
+            return ;
+                }
+        }
+}
+void Demo ()
+{
+    int option;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -Demonstration Menu - - - - - -");
+        printf("\n\n1->Stack\t2->Return to Main Menu");
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -") ;
+        printf("\n\n\tEnter Your Option :");
+        scanf("%d", &option);
+        switch (option)
+        {
+        case  1 :
+            Stack() ;
+            break;
+        case 2 :
+            return ;
+                    }
+            }
+        }
+void main ()
+{
+    int option, N, i ;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -Singly Linked List Menu - - - - - -");
+        printf("\n\n1 ->Create N Students List \t2 ->Operations at End");
+        printf("\t3-> Operations at Front\n\n4-> Demo\t\t\t5->Exit");
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        printf("\n\n\tEnter Your Option : ");
+        scanf ("%d",&option);
+        switch (option)
+        {
+        case  1 :
+            Start  = NULL;
+            printf("\n\n\tEnter  Number of Students:");
+            scanf ("%d", & N);
+            for(i=0;i<N;i++)
+                Insert_at_Front();
+                Display();
+            break ;
+        case 2 :
+            At_End();
+            Display();
+            break;
+        case 3:
+            At_Front();
+            Display();
+            break;
+        case 4: Demo();
+            break;
+        case 5: exit(0);
+        }
+    }    
+}
+            
