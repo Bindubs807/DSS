@@ -1,0 +1,252 @@
+#include<stdio.h>
+#include<stdlib.h>
+typedef struct NODE
+{
+    int SSN;
+    char Dept[15];
+    char Name[30];
+    char Design[15];
+    float Salary;
+    char PhNo[11];
+    struct NODE *next;
+    struct NODE *prev;
+} node ;
+
+node *Start,*New;
+
+void Create_Node()
+{
+    New = (node*)malloc(sizeof(node));
+    printf("\n\n\tEnter the Details of the employee:-\n");
+    printf("\n\n\tSSN:");
+    scanf("%d",New->SSN);
+    printf("\n\n\tName:");
+    scanf("%s",New->Name);
+    printf("\n\n\tDepartment:");
+    scanf("%s",New->Dept);
+    printf("\n\n\tdesignation:");
+    scanf("%s",&New->Design);
+    printf("\n\n\tsalary:");
+    scanf("%f",New->Salary);
+    printf("\n\n\tPhoneNumber:");
+    scanf("%c",New->PhNo);
+    New->next=NULL;
+    New->prev=NULL;
+
+}
+void Insert_at_Front()
+{
+   Create_Node();
+   if(Start ==NULL)
+      Start  =  New ;
+   else
+   {
+    New->next  = Start ;
+    Start->prev=New;
+    Start = New;
+   }
+}
+void Insert_at_End ()
+{
+    Create_Node();
+    node *Temp;
+    if(Start ==NULL)
+        Start = New ;
+    else
+    {
+        Temp=Start;
+        while (Temp->next!=NULL)
+            Temp=Temp->next ;
+        Temp->next=New;
+        New->prev=Temp;
+     }
+}
+void Delete_at_Front ()
+{
+    node *Temp;
+    if(Start==NULL)
+        printf("\n\tList is Empty, cannot Delete . . .");
+    else
+    {
+        Temp=Start;
+        Start=Start->next;
+        Start->prev=NULL;
+        printf("\n\n\tNode   with SSN  : %s  is Deleted", Temp->SSN) ;
+        free (Temp) ;
+    }
+}
+void Delete_at_End ()
+{
+    node *Temp, *Prev ;
+    if (Start==NULL)
+        printf("\n\n\tList is Empty, cannot Delete .  .  .") ;
+    else
+    {
+        if  (Start ->next  ==NULL)
+        {
+            printf("\n\n\tNode    with  SSN     :  %s    is Deleted", Start->SSN) ;
+            free(Start) ;
+            Start=NULL;
+        }
+        else
+        {
+            Temp = Start;
+            Prev= Temp;
+            while(Temp->next!=NULL)
+            {
+                Prev=Temp;
+                Temp=Temp->next;
+            }
+            Prev->next=NULL;
+            printf("\n\n\tNode   with USN  : %s  is Deleted", Temp->SSN) ;
+            free(Temp) ;
+          }
+     }
+}
+void Display()
+{
+    int  Count = 0;
+    node *Temp;  
+    if(Start==NULL)
+        printf("\n\n\n/tList is Empty");
+    else
+    {
+        printf("\n\n\n/tSTART-->");
+        Temp = Start;
+        while(Temp!=NULL)
+        {
+            printf("\n\n\n/t [%d/%s/%s/%s/%f/%s]-->",Temp->SSN,Temp->Name,Temp->Dept,Temp->Design, Temp->Salary,Temp->PhNo);
+            Count++;
+            Temp=Temp->next;
+        }   
+        printf ("NULL");
+    }
+    printf("\n\n\tList  Contains %d Nodes", Count);
+}
+void At_End ()
+{
+    int option;
+    while(1)
+{
+printf("n\n\n/n- - - - -Operations at End Menu - - - - - -");
+printf("\n\n1 ->Insertion\t2->Deletion \t3->Return to Main Menu");
+printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -") ;
+printf("\n\n\tEnter Your Option :") ;
+scanf ("%d",&option) ;
+switch (option)
+{
+case 1:
+Insert_at_End () ;
+break ;
+case 2:
+Delete_at_End () ;
+break ;
+case 3 :
+return ;
+       }
+   }
+}
+void At_Front ()
+{
+    int option;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -Operations at Front Menu - - - - - -");
+        printf("\n\n1 ->Insertion\t2->Deletion\t3->Return to Main Menu") ;
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        printf("\n\n\tEnter Your Option:");
+        scanf ("%d", & option);
+        switch(option)
+        {
+        case  1 :
+            Insert_at_Front();
+            break ;
+        case 2 :
+            Delete_at_Front();
+            break ;
+        case 3 :
+            return ;
+        }
+    }
+}
+void DQueue ()
+{
+    int option;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -DQueue Operations at Menu - - - - - -");
+        printf("\n\n1->Insert Front\t2->Insert Rear\t3->Delete Front\t4->Delete Rear\t5->Return to main menu");
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        printf("\n\n\tEnter Your Option : ");
+        scanf("%d",&option) ;
+        switch(option)
+        {
+        case  1 :
+            Insert_at_Front();
+            Display ();
+            break ;
+        case 2:
+            Insert_at_End () ;
+            Display ();
+            break ;
+        case 3:
+            if (Start==NULL)
+                 printf ("\n\n\tDQueue is Empty, Cannot Pop") ;
+            else
+            {
+                Delete_at_Front () ;
+                Display ();
+            }
+            break ;
+        case 4:
+            if (Start==NULL)
+                 printf ("\n\n\tDQueue is Empty, Cannot Pop") ;
+            else
+            {
+                Delete_at_End () ;
+                Display ();
+            }
+            break ;
+        case 5 :
+            return ;
+                }
+        }
+}
+void main ()
+{
+    int option, N, i ;
+    while(1)
+    {
+        printf("\n\n\n/n- - - - -doubly  Linked List Menu - - - - - -");
+        printf("\n\n1 ->Create N employees List \t2->display\t3->Operations at End");
+        printf("\t4-> Operations at Front\n\n5DQueue\t\t\t6->Exit");
+        printf("\n\n- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -");
+        printf("\n\n\tEnter Your Option : ");
+        scanf ("%d",&option);
+        switch (option)
+        {
+        case  1 :
+            Start  = NULL;
+            printf("\n\n\tEnter  Number of employees:");
+            scanf ("%d", & N);
+            for(i=0;i<N;i++)
+                Insert_at_End();
+            break ;
+        case 2:
+            Display();
+            break;
+        case 3 :
+            At_End();
+            Display();
+            break;
+        case 4:
+            At_Front();
+            Display();
+            break;
+        case 5: DQueue();
+            break;
+        case 6: exit(0);
+        }
+    }    
+}
+            
