@@ -1,0 +1,91 @@
+#include<stdio.h>
+#include<stdlib.h>
+#define MAX 100
+char stack[MAX];
+int top = -1;
+void push(char ch)
+{
+    stack[++top] = ch;
+}
+char pop()
+{
+    return stack[top--];
+}
+int priority(char ch)
+{
+    int p;
+    switch (ch)
+    {
+    case '#':
+        p = 0;
+        break;
+    case '(':
+        p = 1;
+        break;
+    case '+':
+    case '-':
+        p = 2;
+        break;
+    case '*':
+    case '/':
+    case '%':
+        p = 3;
+        break;
+    case '^':
+    case '$':
+        p = 4;
+        break;
+    }
+    return p;
+}
+void infix_to_postfix(char infix[MAX],char postfix[MAX])
+{
+    int i, j;
+    char ch;
+    push('#');
+    i=0;
+    j=0;
+    while(infix[i]!='\0')
+    {
+        switch(infix[i])
+    {
+        case '(':
+            push(infix[i]);
+            break;
+        case ')':
+            ch = pop();
+            while (ch != '(')
+            {
+                postfix[j++] = ch;
+                ch = pop();
+            }
+            break;
+        case '+':
+        case '-':
+        case '*':
+        case '/':
+        case '%':
+        case '^':
+        case '$':
+            while (priority(stack[top]) >= priority(infix[i]))
+            postfix[j++]=pop();
+            push(infix[i]);
+            break;
+        default:
+            postfix[j++] = infix[i];
+    }
+            i++;
+        }
+    while (top > 0)
+        postfix[j++] = pop();
+    postfix[j] = '\0';
+}
+int main()
+{
+    char infix[MAX],postfix[MAX];
+    printf("\nenter the valid infix expression:\n");
+    scanf("%s",infix);
+    infix_to_postfix(infix,postfix);
+    printf("\n\npostfix expression is %s\n\n",postfix);
+    return 0;
+}
