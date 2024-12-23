@@ -1,0 +1,111 @@
+#include<stdio.h>
+#include<stdlib.h>
+ typedef struct Node
+{
+    int Data;
+    struct Node * left;
+    struct Node * right;
+}node;
+node *New;
+void Create_Node()
+{
+    New= (node*) malloc(sizeof(node));
+    printf("\nEnter The value: ");
+    scanf("%d", &New-> Data);
+    New-> left = NULL;
+    New -> right = NULL;
+}
+node* Insert(node* temp)
+{
+    if(temp==NULL)
+        return New;
+    if(New->Data < temp->Data)
+        temp->left=Insert(temp->left);
+    else if(New->Data > temp->Data)
+        temp->right=Insert(temp->right);
+    return temp;
+}
+void preorder(node *temp)
+{
+    if (temp!= NULL)
+    {
+        printf("%d ", temp-> Data);
+        preorder(temp -> left);
+        preorder(temp -> right);
+    }
+}
+void inorder(node *temp)
+{
+    if (temp!= NULL)
+    {
+        inorder(temp-> left);
+        printf("%d ",temp -> Data);
+        inorder(temp -> right);
+    }
+}
+void postorder(node * temp)
+{
+    if (temp!= NULL)
+    {
+        postorder(temp-> left);
+        postorder(temp-> right);
+        printf("%d ", temp -> Data);
+    }
+}
+int Search(node *temp, int key)
+{
+    if (temp== NULL)
+        return 0;
+    if (temp-> Data == key)
+        return 1;
+    if (key < temp-> Data)
+        Search(temp->left,key);
+    if (key > temp->Data);
+         Search(temp->right,key);
+    }    
+void main()
+{
+    int option, key, i, n;
+    node* root = NULL;
+    while (1)
+    {
+        printf("\n-------BST MENU-------");
+        printf("\n1.Create a BST ");
+        printf("\n2.preorder\t3->inorder\t4->postorder");
+        printf("\n5.search ");
+        printf("\n6.Exit");
+        printf("\nEnter your option: ");
+        scanf("%d", & option);
+        switch (option)
+        {
+        case 1:
+            printf("\nEnter the number of elements: ");
+            scanf("%d", & n);
+            for (i = 0; i < n; i++)
+            {
+                Create_Node();
+                root = Insert(root);            }
+            break;
+        case 2:
+                printf("\nThe Preorder traversing: ");
+                preorder(root);
+                break;
+        case 3: printf("\nThe Inorder traversing ");
+                inorder(root);
+                break;
+        case 4: printf("\nThe Postorder traversing: ");
+                postorder(root);
+                break;
+        case 5:
+            printf("\n\nenter the key element:");
+            scanf("%d",&key);
+            if(Search(root,key))
+                printf("\n\n%d is found",key);
+            else
+                printf("\n\n\t%d is not found",key);
+                break;
+        case 6:
+            exit(0);
+        }
+    }
+}
